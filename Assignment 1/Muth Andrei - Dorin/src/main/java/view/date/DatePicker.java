@@ -52,7 +52,7 @@ public class DatePicker {
         next.addActionListener(ae -> {
             month++;
             if(month == 12) {
-                month = 10;
+                month = 0;
                 year++;
             }
             displayDate();
