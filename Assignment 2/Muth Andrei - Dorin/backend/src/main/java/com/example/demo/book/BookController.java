@@ -71,10 +71,10 @@ public class BookController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<MessageResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
         return ResponseEntity
                 .badRequest()
-                .body((Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage()));
+                .body(new MessageResponse(Objects.requireNonNull(ex.getBindingResult().getFieldError()).getDefaultMessage()));
     }
 
 }
