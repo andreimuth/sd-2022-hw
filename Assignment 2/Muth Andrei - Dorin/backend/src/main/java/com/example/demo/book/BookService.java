@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,7 +60,7 @@ public class BookService {
         return bookRepository.findAllByQuantityLessThan(quantity);
     }
 
-    public String generateReport(ReportType type) {
+    public File generateReport(ReportType type) {
         return reportServiceFactory.getReportService(type).generateReport(findAllByQuantityLessThan(1L));
     }
 

@@ -16,10 +16,10 @@ import static com.example.demo.report.ReportType.*;
 @Service
 public class CSVReportService implements ReportService {
 
-    private File file = new File("report.csv");
+    private final File file = new File("report.csv");
     private final ObjectToCsvRowMapper<Book> mapper = new ObjectToCsvRowMapper<>(Book.class);
     @Override
-    public String generateReport(List<Book> books) {
+    public File generateReport(List<Book> books) {
         try {
             FileWriter outputFile = new FileWriter(file);
             CSVWriter writer = new CSVWriter(outputFile);
@@ -34,7 +34,7 @@ public class CSVReportService implements ReportService {
         } catch (IOException e) {
             throw new RuntimeException("Error while generating CSV report");
         }
-        return "CSV report generated";
+        return file;
     }
 
     @Override

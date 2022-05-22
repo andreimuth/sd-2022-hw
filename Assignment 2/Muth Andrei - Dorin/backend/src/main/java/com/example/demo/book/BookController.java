@@ -6,16 +6,27 @@ import com.example.demo.book.model.Book;
 import com.example.demo.report.ReportType;
 import com.example.demo.security.dto.MessageResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.SneakyThrows;
+import org.apache.catalina.connector.Response;
+import org.apache.pdfbox.io.IOUtils;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
+import org.springframework.boot.autoconfigure.web.ServerProperties.Tomcat;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.*;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
 import static com.example.demo.UrlMapping.*;
+import static java.util.Base64.getEncoder;
 
 @RestController
 @RequestMapping(BOOKS)
@@ -50,8 +61,17 @@ public class BookController {
     }
 
     @GetMapping(GENERATE_REPORT)
-    public String generateReport(@PathVariable ReportType type) {
-        return bookService.generateReport(type);
+    public void demo(HttpServletResponse response, @PathVariable String type) { // (1) Return byte array response
+        File file = bookService.generateReport(ReportType.valueOf(type));
+        System.out.println(file.getAbsolutePath());
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=" + file.getName());
+        try (InputStream inputStream = new FileInputStream(file)) {
+            IOUtils.copy(inputStream, response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping(FILTER_BOOKS)

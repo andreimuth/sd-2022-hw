@@ -1,5 +1,7 @@
 package com.example.demo.book;
 
+
+
 import com.example.demo.book.dto.BookDto;
 import com.example.demo.book.model.Book;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class BookServiceIntegrationTest {
