@@ -19,8 +19,8 @@ public class Scheduler {
     private final ThreadRepository threadRepository;
     private final EmailSender emailSender;
 
-    @Scheduled(cron = "0 0/3 * * * ?")
-    //@Scheduled(cron = "@daily")
+    //@Scheduled(cron = "0 0/3 * * * ?")
+    @Scheduled(cron = "@daily")
     public void scheduler() {
         List<Thread> threads = threadRepository.findAll();
         for(Thread thread : threads) {

@@ -120,7 +120,7 @@ public class AppServiceIntegrationTest {
                 .type("DLC").price(2.99F).build();
         appService.create(app1);
         appService.create(app2);
-        AppFilterRequestDto filter = AppFilterRequestDto.builder().build();
+        AppFilterRequestDto filter = AppFilterRequestDto.builder().name("bla").build();
         List<AppDto> filtered = appService.findAllFiltered(filter);
         assertEquals(0, filtered.size());
     }

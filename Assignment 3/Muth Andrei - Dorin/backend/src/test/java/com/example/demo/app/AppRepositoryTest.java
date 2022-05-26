@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.demo.app.AppSpecifications.similarNames;
 import static com.example.demo.app.model.EType.GAME;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -76,6 +77,25 @@ public class AppRepositoryTest {
         Optional<App> found = appRepository.findById(saved.getId());
         assertTrue(found.isPresent());
         assertEquals(saved, found.get());
+    }
+
+    @Test
+    void testSpecificationQuery() {
+        for (int a1 = 'a'; a1 <= 'z'; a1++) {
+            for (int a2 = 'a'; a2 <= 'z'; a2++) {
+                for (int a3 = 'a'; a3 <= 'z'; a3++) {
+                    String name = String.valueOf((char) a1) +
+                            (char) a2 +
+                            (char) a3;
+                    appRepository.save(App.builder()
+                            .name(name)
+                            .build());
+                }
+            }
+        }
+
+        final List<App> apps = appRepository.findAll(similarNames("%b%"));
+        assertTrue(apps.size() > 1000);
     }
 
 }
